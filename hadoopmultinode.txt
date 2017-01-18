@@ -1,0 +1,218 @@
+##-------------------------------------------------------------------------------------------------------
+## Instructions on how to install HADOOP in a multi-node cluster (>1 nodes).
+## Prepared by Benson Mwangi (benson.mwangi@gmail.com)
+## Any references used in these notes are given at the bottom of this note
+## (NB: Actual code is tabbed)
+##------------------------------------------------------------------------------------------------------
+
+
+Download hadoop (2.7.2) and unzip or untar.
+
+	wget http://apache.claz.org/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
+	tar -zxvf hadoop-2.7.2.tar.gz
+
+
+Copy/move the hadoop folder onto your installation folder (e.g. /usr/local)
+
+	mv hadoop-2.7.2 /usr/local/hadoop
+
+
+Update your operating system and install secure shell (ssh) server ( Assuming Fedora here)
+
+	yum update
+
+	yum install openssh-server
+
+Not - make sure you remove "openvpn", otherwise you get this error "ssh: connect to host port 22: no route to host"
+
+	yum remove openvpn
+
+Hadoop does not support IPv6 and therefore should be disabled and switch to IPv4.
+
+
+	export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+
+
+Generate and enable ssh key to localmachine ( all network machines - master and slaves) 
+The difference between master and slaves is explored in details elsewhere (see links below)
+In addition copy keys to across the hadoop cluster allow "key less" ssh login among computers.
+	cd
+	ssh-keygen -t rsa -P ""
+	cat ./.ssh/id_rsa.pub >> ./.ssh/authorized_keys
+	chmod 600 ~/.ssh/authorized_keys
+
+Copy keys from master to slave and vice versa
+
+	user@master:~$ ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@slave #master-to-slave ( repeat for slave-to-master)
+
+
+Setup Hadoop environment variables on mater and all slave nodes
+Copy the following on ~/.bashrc file ( Assuming loged in as the hadoop user).
+
+	export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk # This assumes openjdk java 1.8.0	
+	export PATH=$PATH:$JAVA_HOME/bin
+	export HADOOP_HOME=/usr/local/hadoop
+	export PATH=$PATH:$HADOOP_HOME/bin
+	export HADOOP_MAPRED_HOME=$HADOOP_HOME
+	export HADOOP_COMMON_HOME=$HADOOP_HOME
+	export HADOOP_HADFS_HOME=$HADOOP_HOME
+	export YARN_HOME=$HADOOP_HOME
+	export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+	export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+	export HADOOP_INSTALL=$HADOOP_HOME
+	export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/:$LD_LIBRARY_PATH # This was added as I was getting a weird error without it.
+
+
+Edit the hadoop environment file (conv/hadoop-env.sh) and add $JAVA_HOME ( add the following statement at the beginning of the file).
+Note this has to be done for both master and slaves.
+
+	export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk 
+
+Configure master and slave ipaddresses by editing /etc/hosts and adding master and slave ip addresses 
+This assumes there are two computers one acting as a master and the oter as a slave. You can add more slaves as necessary.
+This configuration has to be done for both master and slaves. 
+
+	gedit /etc/hosts/
+
+	192.168.0.1    master
+	192.168.0.2    slave
+
+
+Add or Update Information regarding Slaves on the MASATER Node ONLY!!
+Note: Assumes (user) is the hadoop user or whenever hadoop was installed. 
+
+	gedit /home/user/hadoop/etc/hadoop/slave # Add the following on the slave text document. 
+
+	master
+	slave
+
+
+##-------HADOOP CONFIGURATION FILES BEGIN HERE (PAY ATTENTION)!-------------------------------------------------------------------------------
+
+Edit core-site.xml (/home/user/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
+(NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
+(NOTE:- THE HADOOP DATA FOLDER HAS TO BE CREATED ON ALL NODES e.g. mkdir /home/user/tmp # see 3rd line below).
+
+	<property>
+	<name>hadoop.tmp.dir</name>
+	<value>/home/user/tmp</value>
+	<description>A temporary directory.</description>
+	</property>
+
+	<property>
+	<name>fs.defaultFS</name>
+	<value>hdfs://master:54310</value>
+	<description>Instructions to use HDFS for file storage</description>
+	</property>
+
+Edit mapred-site.xml (/home/user/hadoop/etc/hadoop/mapred-site.xml). As above place these edits between configurations.
+(NOTE:- EDIT THIS FILE ON MASTER NODE ONLY!!)
+
+	<property>
+	<name>mapreduce.jobtracker.address</name>	
+	<value>master:54311</value>
+	<description>Mapreduce host and jobtracker</description>
+	</property>
+	<property>
+	<name>mapreduce.framework.name</name>
+	<value>yarn</value>
+	<description>Mapreduce Jobs Framework.</description>
+	</property>
+
+Edit hdfs-site.xml (/home/user/hadoop/etc/hadoop/hdfs-site.xml).
+(NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
+(NOTE:- Value 2 on line 3 describes the number of file replications to be performed.)
+
+	<property>
+	<name>dfs.replication</name>
+	<value>2</value>
+	<description>Default block replication. Namenode - it's the master and only stores the metadata of HDFS.</description>
+	</property>
+	<property>
+	<name>dfs.namenode.name.dir</name>
+	<value>/hadoop-data/hadoopuser/hdfs/namenode</value>
+	<description>Determines where on the local filesystem the DFS name node should store the name table(fsimage).</description>
+	</property>
+	<property>
+	<name>dfs.datanode.data.dir</name>
+	<value>/hadoop-data/hadoopuser/hdfs/datanode</value>
+	<description>Determines where on the local filesystem an DFS data node should store its blocks.Data node - Stores data in the Hadoop file system</description>
+	</property>
+
+Edit yarn-site.xml (/home/user/hadoop/etc/hadoop/yarn-site.xml)
+(NOTE:- EDIT THIS FILE ON MASTER and SLAVE NODES)
+
+
+	<property>
+	<name>yarn.nodemanager.aux-services</name>
+	<value>mapreduce_shuffle</value>
+	</property>
+	<property>
+	<name>yarn.resourcemanager.scheduler.address</name>
+	<value>master:8030</value>
+	</property> 
+	<property>
+	<name>yarn.resourcemanager.address</name>
+	<value>master:8032</value>
+	</property>
+	<property>
+	<name>yarn.resourcemanager.webapp.address</name>
+	<value>master:8088</value>
+	</property>
+	<property>
+	<name>yarn.resourcemanager.resource-tracker.address</name>
+	<value>master:8031</value>
+	</property>
+	<property>
+	<name>yarn.resourcemanager.admin.address</name>
+	<value>master:8033</value>
+	</property>
+
+
+Format NAMENODE before starting the cluster using the following command (Type the following command)
+
+	hdfs namenode -format
+
+
+Start/Stop the cluster using the following command ( assuming all went well with ~/.bashrc environment variables above).
+
+	start-dfs.sh
+	stop-dfs.sh
+
+Start/Stop Yarn using the following command ( Assuming similar as above)
+
+	start-yarn.sh
+	stop-yarn.sh
+
+To check if everything went well ( type the following commond)
+NOTE: The output should list(NameNode, SecondaryNameNode, DataNode (on master node) and DataNode (on all slave nodes))
+NOTE: As Yarn is also running you should see the following (NodeManager, ResourceManager on master node and NodeManager on slave nodes)
+
+	jps
+
+The following Web UIs should give access to visually assess HDFS and YARN services on the browser.
+
+	Name Node:localhost:50070
+	YARN Services:localhost:8088
+	Secondary Name Node:localhost:50090
+	Data Node 1: localhost:50075
+	Data Node 2: localhost:50075
+
+
+NOTE: If all services were successfully started in all nodes they should be visible here
+	
+	http://master:8088/cluster/nodes
+
+The following example should execute properly if the installation was successful
+
+	hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar pi 30 100
+
+#---------END---------------------------------------------------------------------------------------------------------------------------------
+#---------REFERENCES--------------------------------------------------------------------------------------------------------------------------
+
+1) https://www.researchgate.net/post/how_to_configure_hadoop_271_ubuntu_1404_multinode_cluster
+
+2) http://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-multi-node-cluster/
+
+
+
