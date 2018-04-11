@@ -8,7 +8,7 @@
 
 Download hadoop (2.7.2) and unzip or untar.
 
-	wget http://apache.claz.org/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz
+	wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.2/hadoop-2.7.2.tar.gz
 	tar -zxvf hadoop-2.7.2.tar.gz
 
 
