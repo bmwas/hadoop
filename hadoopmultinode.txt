@@ -31,11 +31,6 @@ Hadoop does not support IPv6 and therefore should be disabled and switch to IPv4
 
 	export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
 
-# Update /etc/hosts for master AND slave
-
-192.168.0.1    master
-192.168.0.2    slave
-
 
 Generate and enable ssh key to localmachine ( all network machines - master and slaves) 
 The difference between master and slaves is explored in details elsewhere (see links below)
