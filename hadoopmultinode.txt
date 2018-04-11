@@ -69,12 +69,12 @@ Note this has to be done for both master and slaves.
 
 Configure master and slave ipaddresses by editing /etc/hosts and adding master and slave ip addresses 
 This assumes there are two computers one acting as a master and the oter as a slave. You can add more slaves as necessary.
-This configuration has to be done for both master and slaves. 
+This configuration has to be done for both master and slaves. (This has to be done on both machines i.e. master and slave).  Change IP addresses accordingly 
 
 	gedit /etc/hosts/
 
-	192.168.0.1    master
-	192.168.0.2    slave
+	192.168.1.5    master
+	192.168.1.13    slave
 
 
 Add or Update Information regarding Slaves on the MASATER Node ONLY!!
