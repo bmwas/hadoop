@@ -120,6 +120,7 @@ Edit mapred-site.xml (/home/user/hadoop/etc/hadoop/mapred-site.xml). As above pl
 Edit hdfs-site.xml (/usr/local/hadoop/etc/hadoop/hdfs-site.xml).
 (NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
 (NOTE:- Value 2 on line 3 describes the number of file replications to be performed.)
+(NOTE:- Remember to change namenode dir (e.g. 	<value>/home/hadoop/hadoop-data</value> ) )
 
 	<property>
 	<name>dfs.replication</name>
@@ -128,12 +129,12 @@ Edit hdfs-site.xml (/usr/local/hadoop/etc/hadoop/hdfs-site.xml).
 	</property>
 	<property>
 	<name>dfs.namenode.name.dir</name>
-	<value>/hadoop-data/hadoopuser/hdfs/namenode</value>
+	<value>/home/hadoop/hadoop-data</value>
 	<description>Determines where on the local filesystem the DFS name node should store the name table(fsimage).</description>
 	</property>
 	<property>
 	<name>dfs.datanode.data.dir</name>
-	<value>/hadoop-data/hadoopuser/hdfs/datanode</value>
+	<value>/home/hadoop/hadoop-data</value>
 	<description>Determines where on the local filesystem an DFS data node should store its blocks.Data node - Stores data in the Hadoop file system</description>
 	</property>
 
