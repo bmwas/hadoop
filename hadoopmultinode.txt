@@ -87,7 +87,7 @@ Note: Assumes (user) is the hadoop user or whenever hadoop was installed.
 
 ##----HADOOP CONFIGURATION FILES BEGIN HERE (Please pay extra  ATTENTION)!-------------##
 
-Edit core-site.xml (/home/user/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
+Edit core-site.xml (/usr/local/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
 (NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
 (NOTE:- THE HADOOP DATA FOLDER HAS TO BE CREATED ON ALL NODES e.g. mkdir /home/user/tmp # see 3rd line below).
 
