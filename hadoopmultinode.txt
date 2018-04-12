@@ -45,8 +45,8 @@ Copy keys from master to slave and vice versa
 	user@master:~$ ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@slave #master-to-slave ( repeat for slave-to-master)
 
 
-Setup Hadoop environment variables on mater and all slave nodes
-Copy the following on ~/.bashrc file ( Assuming loged in as the hadoop user).
+Setup Hadoop environment variables on the master machine and all slave nodes
+Copy the following onto the profile (i.e. ~/.bashrc ) file ( This assumes you're logged in as user "hadoop").
 
 	export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk # This assumes openjdk java 1.8.0	
 	export PATH=$PATH:$JAVA_HOME/bin
