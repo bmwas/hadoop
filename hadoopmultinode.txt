@@ -62,8 +62,7 @@ Copy the following onto the profile (i.e. ~/.bashrc ) file ( This assumes you're
 	export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native/:$LD_LIBRARY_PATH # This was added as I was getting a weird error without it.
 
 
-Edit the hadoop environment file (conv/hadoop-env.sh) and add $JAVA_HOME ( add the following statement at the beginning of the file).
-Note this has to be done for both master and slaves.
+Edit the hadoop environment file (/hadoop/etc/hadoop/hadoop-env.sh) and add $JAVA_HOME ( add the following statement at the beginning of the file).please not that this step has to be performed for both master and slave nodes. 
 
 	export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk 
 
