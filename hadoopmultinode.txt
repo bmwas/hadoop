@@ -76,16 +76,16 @@ This configuration has to be done for both master and slaves. (This has to be do
 	192.168.1.13    slave
 
 
-Add or Update Information regarding Slaves on the MASATER Node ONLY!!
+Add or Update Information regarding slave nodes on the ***MASTER NODE ONLY!!***
 Note: Assumes (user) is the hadoop user or whenever hadoop was installed. 
 
-	gedit /home/user/hadoop/etc/hadoop/slave # Add the following on the slave text document. 
+	gedit /usr/local/hadoop/etc/hadoop/slaves # Add the following on the slave text document. 
 
 	master
 	slave
 
 
-##-------HADOOP CONFIGURATION FILES BEGIN HERE (PAY ATTENTION)!-------------------------------------------------------------------------------
+##----HADOOP CONFIGURATION FILES BEGIN HERE (Please pay extra  ATTENTION)!-------------##
 
 Edit core-site.xml (/home/user/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
 (NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
