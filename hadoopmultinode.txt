@@ -87,13 +87,13 @@ Note: Assumes (user) is the hadoop user or whenever hadoop was installed.
 
 ##----HADOOP CONFIGURATION FILES BEGIN HERE (Please pay extra  ATTENTION)!-------------##
 
-Edit core-site.xml (/usr/local/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
+EDIT core-site.xml (/usr/local/hadoop/etc/hadoop/core-site.xml ). Place edits between <configuration> </configuration>
 (NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
 (NOTE:- THE HADOOP DATA FOLDER HAS TO BE CREATED ON ALL NODES e.g. mkdir /home/user/tmp # see 3rd line below).
 
 	<property>
 	<name>hadoop.tmp.dir</name>
-	<value>/home/user/tmp</value>
+	<value>/home/hadoop/tmp</value>
 	<description>A temporary directory.</description>
 	</property>
 
@@ -117,7 +117,7 @@ Edit mapred-site.xml (/home/user/hadoop/etc/hadoop/mapred-site.xml). As above pl
 	<description>Mapreduce Jobs Framework.</description>
 	</property>
 
-Edit hdfs-site.xml (/home/user/hadoop/etc/hadoop/hdfs-site.xml).
+Edit hdfs-site.xml (/usr/local/hadoop/etc/hadoop/hdfs-site.xml).
 (NOTE:- EDIT THIS FILE ON BOTH MASTER AND SLAVE NODES!!) 
 (NOTE:- Value 2 on line 3 describes the number of file replications to be performed.)
 
@@ -137,7 +137,7 @@ Edit hdfs-site.xml (/home/user/hadoop/etc/hadoop/hdfs-site.xml).
 	<description>Determines where on the local filesystem an DFS data node should store its blocks.Data node - Stores data in the Hadoop file system</description>
 	</property>
 
-Edit yarn-site.xml (/home/user/hadoop/etc/hadoop/yarn-site.xml)
+Edit yarn-site.xml (/usr/local/hadoop/etc/hadoop/yarn-site.xml)
 (NOTE:- EDIT THIS FILE ON MASTER and SLAVE NODES)
 
 	<property>
