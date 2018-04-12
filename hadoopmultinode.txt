@@ -189,11 +189,11 @@ NOTE: As Yarn is also running you should see the following (NodeManager, Resourc
 
 The following Web UIs should give access to visually assess HDFS and YARN services on the browser.
 
-	Name Node:localhost:50070
-	YARN Services:localhost:8088
-	Secondary Name Node:localhost:50090
-	Data Node 1: localhost:50075
-	Data Node 2: localhost:50075
+	Name Node:master:50070
+	YARN Services:master:8088
+	Secondary Name Node:master:50090
+	Data Node 1: master:50075
+	Data Node 2: master:50075
 
 
 NOTE: If all services were successfully started in all nodes they should be visible here
