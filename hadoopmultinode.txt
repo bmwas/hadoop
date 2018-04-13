@@ -212,6 +212,7 @@ The following example should execute properly if the installation was successful
 
 1) https://www.researchgate.net/post/how_to_configure_hadoop_271_ubuntu_1404_multinode_cluster
 2) http://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-multi-node-cluster/
+3) https://mfaizmzaki.com/2015/12/17/how-to-install-hadoop-2-7-1-multi-node-cluster-on-amazon-aws-ec2-instance-improved-part-1/
 
 
 
