@@ -195,7 +195,9 @@ The following Web UIs should give access to visually assess HDFS and YARN servic
 	Secondary Name Node:master:50090
 	Data Node 1: master:50075
 	Data Node 2: master:50075
-
+	
+Or use the following code
+	hdfs dfsadmin -report
 
 NOTE: If all services were successfully started in all nodes they should be visible here
 	
